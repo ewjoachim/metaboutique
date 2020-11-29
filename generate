@@ -240,7 +240,7 @@ def save_as(url: str, filename: str, session: requests.Session) -> str:
 
 def write_webpage(webpage: str) -> None:
     (OUTDIR / "index.html").write_text(webpage)
-    shutil.rmtree(OUTDIR / "_assets")
+    shutil.rmtree(OUTDIR / "_assets", ignore_errors=True)
     shutil.copytree(DATADIR, OUTDIR / "_assets")
 
 
