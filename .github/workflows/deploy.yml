@@ -27,13 +27,13 @@ jobs:
           set -xeu
           npm install
           poetry install --no-dev
+          sudo apt-get update && sudo apt-get install tzdata locales -y && sudo locale-gen fr_FR.UTF-8
 
       - name: Generate the website
         run: ./full-generate
         env:
           TWITTER_CLIENT_ID: ${{ secrets.TWITTER_CLIENT_ID }}
           TWITTER_CLIENT_SECRET: ${{ secrets.TWITTER_CLIENT_SECRET }}
-
 
       - name: Add the new files and commit them to the repo
         uses: EndBug/add-and-commit@v5
