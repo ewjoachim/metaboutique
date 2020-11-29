@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
+import argparse
 import datetime
 import itertools
 import json
 import locale
 import os
 import pathlib
+import shutil
 from typing import Iterable, Optional
 from urllib import parse
-import shutil
-import argparse
 
 import jinja2
 import requests
@@ -148,8 +148,9 @@ def prepare_tweets(database: dict, session: requests.Session) -> Iterable:
     apply_patches(database=database)
     for tweet in database["tweets"].values():
         context = prepare_tweet(tweet=tweet, database=database, session=session)
-        if context:
-            yield context
+        if not context:
+            continue
+        yield context
 
 
 def prepare_tweet(
@@ -271,6 +272,15 @@ def get_args():
     return parser.parse_args()
 
 
+def remove_duplicates(data):
+    links = set()
+    for tweet in data:
+        if tweet["link"] in links:
+            continue
+        links.add(tweet["link"])
+        yield tweet
+
+
 def main():
     args = get_args()
     locale.setlocale(locale.LC_TIME, "fr_FR.UTF-8")
@@ -286,6 +296,7 @@ def main():
             key=lambda x: int(x["id"]),
             reverse=True,
         )
+    data = list(remove_duplicates(data=data))
     webpage = generate_webpage(data)
     write_webpage(webpage)
 
