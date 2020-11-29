@@ -212,22 +212,22 @@ def tweet_date(date: str) -> str:
 
 
 def tweet_html(tweet):
-    text = tweet["text"]
+    text = jinja2.escape(tweet["text"])
     for url in tweet["entities"]["urls"]:
         link = url.get("unwound_url", url["expanded_url"])
         if url["display_url"].startswith("pic.twitter.com"):
             replacement = ""
         else:
-            replacement = f'<a href="{link}">{url["display_url"]}</a>'
+            replacement = jinja2.Markup(f'<a href="{link}">{url["display_url"]}</a>')
         text = text.replace(url["url"], replacement)
 
     for mention in tweet["entities"].get("mentions", []):
         at = f"@{mention['username']}"
         link = f"https://twitter.com/{mention['username']}"
-        replacement = f'<a href="{link}">{at}</a>'
+        replacement = jinja2.Markup(f'<a href="{link}">{at}</a>')
         text = text.replace(at, replacement)
 
-    return text.strip().replace("\n", "<br>")
+    return text.strip().replace("\n", jinja2.Markup("<br>"))
 
 
 def save_as(url: str, filename: str, session: requests.Session) -> str:
