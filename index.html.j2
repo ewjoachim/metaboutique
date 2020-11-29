@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>La Méta-boutique</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+  <section class="hero is-small">
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns">
+          <div class="column is-8-desktop is-offset-2-desktop">
+            <h1 class="title is-2 is-spaced">
+              La Méta-boutique
+            </h1>
+            <h2 class="subtitle is-4">
+              Les boutiques de créateur•ices suggérées par <a
+                href="https://twitter.com/garagedeloffre/status/1277912722638876672">&gt;Sandrine Deloffre&lt;
+              </a>
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      {% for line in data|batch(3) %}
+      <div class="tile is-ancestor">
+        {% for tweet in line %}
+        <div class="tile is-parent is-4">
+          <div class="tile is-child card">
+            <div class="card-image">
+              <a href="{{ tweet.link }}" class="image is-4by3 artist-card" title="Lien vers la boutique"
+                style="background-image: url(_assets/{{ tweet.local_preview_image_url }})" target="_blank">
+              </a>
+            </div>
+            <div class="card-content">
+              <div class="media">
+                {% if tweet.mention_handle %}
+                <div class="media-left">
+                  <a href="https://twitter.com/{{ tweet.mention_handle }}" target="_blank">
+                    <figure class="image is-48x48">
+                      <img class="is-rounded" src="_assets/{{ tweet.local_mention_avatar_url }}"
+                        alt="Image de profil de {{ tweet.mention_name }}">
+                    </figure>
+                  </a>
+                </div>
+                <div class="media-content">
+                  <a href="https://twitter.com/{{ tweet.mention_handle }}" target="_blank">
+                    <p class="title is-4">{{ tweet.mention_name }}</p>
+                    <p class="subtitle is-6">
+                      @{{ tweet.mention_handle }}
+                    </p>
+                  </a>
+                </div>
+                {% endif %}
+              </div>
+
+              <div class="content">
+                <p class="has-text-weight-semibold">Le conseil de Sandrine:</p>
+                {{ tweet.html|safe }}
+                <br>
+                <a class="time" href="{{ tweet.self_url }}" target="_blank">
+                  <time datetime="{{ tweet.timestamp }}">{{ tweet.date }}</time>
+                </a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  <footer class="footer has-text-centered">
+    <div class="container">
+      <div class="columns">
+        <div class="column is-8-desktop is-offset-2-desktop">
+          <p>
+            <strong class="has-text-weight-semibold">
+              La Méta-boutique
+            </strong>
+            est un site généré automagiquement à partir des tweets de
+            <a href="https://twitter.com/garagedeloffre/status/1277912722638876672">ce fil de Sandrine Deloffre</a>
+          </p>
+          <p>
+            <small>
+              Conception: <a href="https://twitter/com/ewjoachim">@ewjoachim</a>
+              | Le site est en <a href="https://github.com/ewjoachim/metaboutique">Open Source</a>
+              sous <a href="https://github.com/ewjoachim/metaboutique/LICENCE">licence MIT</a>
+            </small>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- <script type="text/javascript" src="main.js"></script> -->
+</body>
+
+</html>

@@ -1,0 +1,291 @@
+#!/usr/bin/env python
+
+import datetime
+import itertools
+import json
+import locale
+import os
+import pathlib
+from typing import Iterable, Optional
+from urllib import parse
+import shutil
+import argparse
+
+import jinja2
+import requests
+import zoneinfo
+
+OUTDIR = pathlib.Path(__file__).parent / "_out"
+DATADIR = pathlib.Path("data")
+BATCH_SIZE = 100
+AUTHOR_ID = "144817179"
+AUTHOR_HANDLE = "garagedeloffre"
+CONVERSATION_ID = "1277912722638876672"
+DATABASE = "data/database.json"
+# Add tweet id to this set to include them in the recursive fetching of historical data.
+
+HISTORICAL_TWEETS = {"1332626878797066240"}
+
+
+def get_headers():
+    response = requests.post(
+        "https://api.twitter.com/oauth2/token",
+        data={"grant_type": "client_credentials"},
+        auth=(
+            os.environ.get("TWITTER_CLIENT_ID"),
+            os.environ.get("TWITTER_CLIENT_SECRET"),
+        ),
+    ).json()
+    bearer_token = response["access_token"]
+
+    return {"Authorization": f"Bearer {bearer_token}"}
+
+
+HEADERS = get_headers()
+
+
+def write_database(database: dict) -> None:
+    pathlib.Path(DATABASE).write_text(json.dumps(database, indent=4, sort_keys=True))
+
+
+def read_database() -> dict:
+    return json.loads(pathlib.Path(DATABASE).read_text())
+
+
+def get_recent_tweet_ids(session: requests.Session) -> set:
+    url = "https://api.twitter.com/2/tweets/search/recent"
+    params = {"query": f"from:{AUTHOR_HANDLE} conversation_id:{CONVERSATION_ID}"}
+    tweets = []
+    while True:
+        response = session.get(url, headers=HEADERS, params=params).json()
+        tweets.extend(response["data"])
+        if "next_tokens" in response["meta"]:
+            params["next_tokens"] = response["meta"]["next_tokens"]
+        else:
+            break
+    return {t["id"] for t in tweets}
+
+
+def add_recent_tweeter_data(
+    database: dict, session: requests.Session, initial_tweet_ids: set
+):
+    tweet_ids = initial_tweet_ids | get_recent_tweet_ids(session=session)
+    tweet_ids -= set(database["tweets"])
+
+    while tweet_ids:
+        batch_ids = set(itertools.islice(tweet_ids, BATCH_SIZE))
+        new_tweet_ids = process_batch(
+            database=database, batch_ids=batch_ids, session=session
+        )
+        tweet_ids -= batch_ids
+        new_tweet_ids -= {tweet["id"] for tweet in database["tweets"].values()}
+        tweet_ids |= new_tweet_ids
+
+
+def process_batch(database: dict, batch_ids: set, session: requests.Session) -> set:
+    url = "https://api.twitter.com/2/tweets"
+    params = {
+        "ids": ",".join(batch_ids),
+        "tweet.fields": "attachments,text,created_at,author_id,entities,referenced_tweets",
+        "expansions": "attachments.media_keys,referenced_tweets.id,entities.mentions.username",
+        "media.fields": "url,preview_image_url",
+        "user.fields": "profile_image_url,url,username",
+    }
+    response = session.get(url, headers=HEADERS, params=params).json()
+    tweets = [t for t in response["data"] if t["author_id"] == AUTHOR_ID]
+    includes = response.get("includes", {})
+    database["tweets"] |= {t["id"]: t for t in tweets}
+    if "media" in includes:
+        database["media"] |= {m["media_key"]: m for m in includes["media"]}
+    if "users" in includes:
+        database["users"] |= {m["username"]: m for m in includes["users"]}
+    if "tweets" in includes:
+        new_tweets = {
+            m["id"]: m for m in includes["tweets"] if m["author_id"] == AUTHOR_ID
+        }
+        database["tweet_refs"] |= new_tweets
+        return set(new_tweets)
+    return set()
+
+
+def apply_patches(database: dict):
+
+    database["tweets"]["1277912733565009920"]["entities"]["urls"][0]["images"][0][
+        "url"
+    ] = "https://pbs.twimg.com/card_img/1331222635666137088/3Ch43xWX?format=jpg&name=medium"
+    database["tweets"]["1315988470037450752"]["entities"]["urls"][0] = {
+        "url": "https://t.co/YKYKYVJ9zL",
+        "expanded_url": "https://www.charlotteheurtier.fr/",
+        "display_url": "charlotteheurtier.fr",
+        "images": [{"url": "https://nowhere/charlotteheurtier.png"}],
+    }
+
+
+def extract_tweeter_data(
+    session: requests.Session, clear: bool, api: bool, write: bool
+):
+    if clear:
+        database: dict = {"tweets": {}, "users": {}, "media": {}, "tweet_refs": {}}
+        initial_tweet_ids = HISTORICAL_TWEETS
+    else:
+        database = read_database()
+        initial_tweet_ids = set()
+
+    if api:
+        add_recent_tweeter_data(
+            database=database, session=session, initial_tweet_ids=initial_tweet_ids
+        )
+
+    if write:
+        write_database(database=database)
+
+    return database
+
+
+def prepare_tweets(database: dict, session: requests.Session) -> Iterable:
+    apply_patches(database=database)
+    for tweet in database["tweets"].values():
+        context = prepare_tweet(tweet=tweet, database=database, session=session)
+        if context:
+            yield context
+
+
+def prepare_tweet(
+    tweet: dict, database: dict, session: requests.Session
+) -> Optional[dict]:
+
+    result = {}
+
+    try:
+        url = tweet["entities"]["urls"][0]
+    except (KeyError, IndexError):
+        return None
+    result["link"] = url.get("unwound_url", url["expanded_url"])
+
+    try:
+        image_url = database["media"][tweet["attachments"]["media_keys"][0]]["url"]
+    except KeyError:
+        try:
+            image_url = tweet["entities"]["urls"][0]["images"][0]["url"]
+        except KeyError:
+            image_url = None
+    if image_url:
+        parsed_url = parse.urlparse(image_url)
+        name = pathlib.Path(parsed_url.path).name
+        if "." not in name:
+            ext = parse.parse_qs(parsed_url.query)["format"][0]
+            name += f".{ext}"
+        preview_path = save_as(
+            url=image_url, filename=f"tweet_images/{name}", session=session
+        )
+        result["local_preview_image_url"] = preview_path
+
+    try:
+        username = tweet["entities"]["mentions"][0]["username"]
+        mention = database["users"][username]
+    except KeyError:
+        pass
+    else:
+        avatar_path = save_as(
+            url=mention["profile_image_url"],
+            filename=f"avatars/{username}.jpg",
+            session=session,
+        )
+        result["mention_handle"] = username
+        result["mention_name"] = mention["name"]
+        result["local_mention_avatar_url"] = avatar_path
+
+    result["date"] = tweet_date(date=tweet["created_at"])
+    result["self_url"] = f"https://twitter.com/{AUTHOR_HANDLE}/status/{tweet['id']}"
+    result["html"] = tweet_html(tweet=tweet)
+    result["id"] = tweet["id"]
+
+    return result
+
+
+def tweet_date(date: str) -> str:
+    dt = datetime.datetime.fromisoformat(date.replace("Z", "+00:00"))
+    dt = dt.astimezone(zoneinfo.ZoneInfo("Europe/Paris"))
+    return dt.strftime("%d %B %Y, %H:%M")
+
+
+def tweet_html(tweet):
+    text = tweet["text"]
+    for url in tweet["entities"]["urls"]:
+        link = url.get("unwound_url", url["expanded_url"])
+        if url["display_url"].startswith("pic.twitter.com"):
+            replacement = ""
+        else:
+            replacement = f'<a href="{link}">{url["display_url"]}</a>'
+        text = text.replace(url["url"], replacement)
+
+    for mention in tweet["entities"].get("mentions", []):
+        at = f"@{mention['username']}"
+        link = f"https://twitter.com/{mention['username']}"
+        replacement = f'<a href="{link}">{at}</a>'
+        text = text.replace(at, replacement)
+
+    return text.strip().replace("\n", "<br>")
+
+
+def save_as(url: str, filename: str, session: requests.Session) -> str:
+    path = DATADIR / filename
+    if not path.exists():
+        image_bytes = session.get(url).content
+        path.write_bytes(image_bytes)
+    return str(path.relative_to(DATADIR))
+
+
+def write_webpage(webpage: str) -> None:
+    (OUTDIR / "index.html").write_text(webpage)
+    shutil.rmtree(OUTDIR / "_assets")
+    shutil.copytree(DATADIR, OUTDIR / "_assets")
+
+
+def generate_webpage(data: list) -> str:
+    env = jinja2.Environment(loader=jinja2.FileSystemLoader("."), autoescape=True)
+    return env.get_template("index.html.j2").render(data=data)
+
+
+def get_args():
+    parser = argparse.ArgumentParser(description="Generate the website")
+    parser.add_argument(
+        "--clear", action="store_true", help="Start from an empty database"
+    )
+    parser.add_argument(
+        "--write",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Write the database back to the json file",
+    )
+    parser.add_argument(
+        "--api",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Call the twitter api",
+    )
+
+    return parser.parse_args()
+
+
+def main():
+    args = get_args()
+    locale.setlocale(locale.LC_TIME, "fr_FR")
+    (DATADIR / "tweet_images").mkdir(exist_ok=True)
+    (DATADIR / "avatars").mkdir(exist_ok=True)
+    OUTDIR.mkdir(exist_ok=True)
+    with requests.Session() as session:
+        database = extract_tweeter_data(
+            session=session, clear=args.clear, api=args.api, write=args.write
+        )
+        data = sorted(
+            prepare_tweets(database, session=session),
+            key=lambda x: int(x["id"]),
+            reverse=True,
+        )
+    webpage = generate_webpage(data)
+    write_webpage(webpage)
+
+
+if __name__ == "__main__":
+    main()
