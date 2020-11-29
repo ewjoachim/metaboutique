@@ -44,3 +44,8 @@ Some data comes out wrong from the algorithm, and rather than writing the perfec
 - Add a JS-based sort (by +-date, by random, ...)
 - Add tweets by other people when the original thread author has replied to them
 - Handle quote-tweets better
+
+### Legalese
+
+- [License](LICENSE)
+- All the data in `data` is public data taken from Twitter, and belongs to their respecive authors. If anything infringes on your rights, please [contact me](https://twitter.com/ewjoachim)
