@@ -198,6 +198,7 @@ def prepare_tweet(
         result["local_mention_avatar_url"] = avatar_path
 
     result["date"] = tweet_date(date=tweet["created_at"])
+    result["timestamp"] = tweet["created_at"]
     result["self_url"] = f"https://twitter.com/{AUTHOR_HANDLE}/status/{tweet['id']}"
     result["html"] = tweet_html(tweet=tweet)
     result["id"] = tweet["id"]
