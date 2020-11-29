@@ -27,7 +27,7 @@ jobs:
           set -xeu
           npm install
           poetry install --no-dev
-          export DEBIAN_FRONTEND=noninteractive sudo apt-get update && sudo apt-get install tzdata locales -y && sudo locale-gen fr_FR.UTF-8
+          sudo apt-get update && sudo apt-get install tzdata locales -y && sudo locale-gen fr_FR.UTF-8
 
       - name: Generate the website
         run: ./full-generate
