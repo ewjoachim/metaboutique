@@ -272,7 +272,7 @@ def get_args():
 
 def main():
     args = get_args()
-    locale.setlocale(locale.LC_TIME, "fr_FR")
+    locale.setlocale(locale.LC_TIME, "fr_FR.UTF-8")
     (DATADIR / "tweet_images").mkdir(exist_ok=True)
     (DATADIR / "avatars").mkdir(exist_ok=True)
     OUTDIR.mkdir(exist_ok=True)
