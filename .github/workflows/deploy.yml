@@ -1,0 +1,47 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  website:
+    name: Check ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Run image
+        uses: abatilo/actions-poetry@v2.0.0
+
+      - name: Install dependencies
+        run: |
+          set -xeu
+          npm install
+          poetry install
+
+      - name: Check ${{ matrix.name }}
+        run: ./full-generate
+
+      - name: Add the new files and commit them to the repo
+        uses: EndBug/add-and-commit@v5 # You can change this to use a specific version
+        with:
+          add: 'data'
+          message: 'Updating data'
+        env:
+          # This is necessary in order to push a commit to the repo
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged
+
+      - name: Deploy to github pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_out
