@@ -32,8 +32,8 @@ def get_headers():
         "https://api.twitter.com/oauth2/token",
         data={"grant_type": "client_credentials"},
         auth=(
-            os.environ.get("TWITTER_CLIENT_ID"),
-            os.environ.get("TWITTER_CLIENT_SECRET"),
+            os.environ["TWITTER_CLIENT_ID"],
+            os.environ["TWITTER_CLIENT_SECRET"],
         ),
     ).json()
     bearer_token = response["access_token"]
