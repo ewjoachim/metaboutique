@@ -123,6 +123,7 @@ def apply_patches(database: dict):
         "display_url": "charlotteheurtier.fr",
         "images": [{"url": "https://nowhere/charlotteheurtier.png"}],
     }
+    del database["tweets"]["1333418478368419841"]["entities"]["urls"]
 
 
 def extract_tweeter_data(
