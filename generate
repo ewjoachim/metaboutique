@@ -22,6 +22,7 @@ AUTHOR_ID = "144817179"
 AUTHOR_HANDLE = "garagedeloffre"
 CONVERSATION_ID = "1277912722638876672"
 DATABASE = "data/database.json"
+SELF_URL = "lametaboutique.fr"
 
 # Add tweet id to this set to include them in the recursive fetching of historical data.
 HISTORICAL_TWEETS = {"1332626878797066240"}
@@ -193,6 +194,10 @@ def prepare_tweet(
     except (KeyError, IndexError):
         return None
     result["link"] = url.get("unwound_url", url["expanded_url"])
+
+    # Don't post this website on this website. #Meta
+    if SELF_URL in result["link"]:
+        return None
 
     try:
         image_url = database["media"][tweet["attachments"]["media_keys"][0]]["url"]
