@@ -72,6 +72,7 @@ def get_recent_tweet_ids(session: requests.Session) -> set:
 def add_recent_tweeter_data(
     database: dict, session: requests.Session, initial_tweet_ids: set
 ):
+
     tweet_ids = initial_tweet_ids | get_recent_tweet_ids(session=session)
     tweet_ids -= set(database["tweets"])
 
@@ -160,13 +161,13 @@ def get_tweets_in_thread(database: dict):
     to_process = {CONVERSATION_ID}
     in_thread = set()
     tweet_by_parent: dict = {}
-    for tweet in database["tweets"]:
+    for tweet in database["tweets"].values():
         tweet_by_parent.setdefault(get_parent_tweet_id(tweet), set()).add(tweet["id"])
 
     while to_process:
         processing_tweet_id = to_process.pop()
         in_thread.add(processing_tweet_id)
-        to_process |= tweet_by_parent[processing_tweet_id]
+        to_process |= tweet_by_parent.get(processing_tweet_id, set())
 
     return in_thread
 
