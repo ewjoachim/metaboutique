@@ -144,9 +144,37 @@ def extract_tweeter_data(
     return database
 
 
+def get_parent_tweet_id(tweet) -> Optional[str]:
+    if "referenced_tweets" not in tweet:
+        return None
+    parent_ref = next(
+        iter(t for t in tweet["referenced_tweets"] if t["type"] == "replied_to")
+    )
+    if not parent_ref:
+        return None
+    return parent_ref["id"]
+
+
+def get_tweets_in_thread(database: dict):
+    to_process = {CONVERSATION_ID}
+    in_thread = set()
+    tweet_by_parent: dict = {}
+    for tweet in database["tweets"]:
+        tweet_by_parent.setdefault(get_parent_tweet_id(tweet), set()).add(tweet["id"])
+
+    while to_process:
+        processing_tweet_id = to_process.pop()
+        in_thread.add(processing_tweet_id)
+        to_process |= tweet_by_parent[processing_tweet_id]
+
+    return in_thread
+
+
 def prepare_tweets(database: dict, session: requests.Session) -> Iterable:
     apply_patches(database=database)
-    for tweet in database["tweets"].values():
+    in_thread = get_tweets_in_thread(database=database)
+    for tweet_id in in_thread:
+        tweet = database["tweets"][tweet_id]
         context = prepare_tweet(tweet=tweet, database=database, session=session)
         if not context:
             continue
@@ -159,6 +187,7 @@ def prepare_tweet(
 
     result = {}
 
+    # If tweet has no link, skip it
     try:
         url = tweet["entities"]["urls"][0]
     except (KeyError, IndexError):
