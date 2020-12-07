@@ -113,7 +113,6 @@ def process_batch(database: dict, batch_ids: set, session: requests.Session) -> 
 
 
 def apply_patches(database: dict):
-
     database["tweets"]["1277912733565009920"]["entities"]["urls"][0]["images"][0][
         "url"
     ] = "https://pbs.twimg.com/card_img/1331222635666137088/3Ch43xWX?format=jpg&name=medium"
@@ -124,6 +123,7 @@ def apply_patches(database: dict):
         "images": [{"url": "https://nowhere/charlotteheurtier.png"}],
     }
     del database["tweets"]["1333418478368419841"]["entities"]["urls"]
+    del database["tweets"]["1318839439477645314"]["entities"]["urls"]
 
 
 def extract_tweeter_data(
