@@ -61,6 +61,8 @@ def get_recent_tweet_ids(session: requests.Session) -> set:
     tweets = []
     while True:
         response = session.get(url, headers=HEADERS, params=params).json()
+        if response["meta"]["result_count"] == 0:
+            break
         tweets.extend(response["data"])
         if "next_tokens" in response["meta"]:
             params["next_tokens"] = response["meta"]["next_tokens"]
