@@ -449,6 +449,21 @@
             "media_key": "3_1335886386017300480",
             "type": "photo",
             "url": "https://pbs.twimg.com/media/EooFlxrXcAARNTl.jpg"
+        },
+        "3_1351602020197806081": {
+            "media_key": "3_1351602020197806081",
+            "type": "photo",
+            "url": "https://pbs.twimg.com/media/EsHa4FOXMAERi0f.jpg"
+        },
+        "3_1351602020315226116": {
+            "media_key": "3_1351602020315226116",
+            "type": "photo",
+            "url": "https://pbs.twimg.com/media/EsHa4FqW4AQJd4f.jpg"
+        },
+        "3_1351602020508172289": {
+            "media_key": "3_1351602020508172289",
+            "type": "photo",
+            "url": "https://pbs.twimg.com/media/EsHa4GYXAAE2SLb.jpg"
         }
     },
     "tweet_refs": {
@@ -3547,6 +3562,87 @@
                 }
             ],
             "text": "@PunkJackdaw\n\u27a1\ufe0f https://t.co/E9MyABiiOL https://t.co/MihlsYwYOH"
+        },
+        "1335886526123810816": {
+            "attachments": {
+                "media_keys": [
+                    "3_1335886384826093568",
+                    "3_1335886385534918659",
+                    "3_1335886385702694913",
+                    "3_1335886386017300480"
+                ]
+            },
+            "author_id": "144817179",
+            "created_at": "2020-12-07T09:59:02.000Z",
+            "entities": {
+                "mentions": [
+                    {
+                        "end": 16,
+                        "start": 0,
+                        "username": "Damien_Rougeart"
+                    }
+                ],
+                "urls": [
+                    {
+                        "display_url": "damienrougeshop.ecwid.com",
+                        "end": 44,
+                        "expanded_url": "https://damienrougeshop.ecwid.com/",
+                        "images": [
+                            {
+                                "height": 1050,
+                                "url": "https://pbs.twimg.com/news_img/1351610135806926849/dTL6Xfkf?format=jpg&name=orig",
+                                "width": 1701
+                            },
+                            {
+                                "height": 150,
+                                "url": "https://pbs.twimg.com/news_img/1351610135806926849/dTL6Xfkf?format=jpg&name=150x150",
+                                "width": 150
+                            }
+                        ],
+                        "start": 21,
+                        "status": 200,
+                        "title": "Occult and Fantasy art",
+                        "unwound_url": "https://damienrougeshop.ecwid.com/",
+                        "url": "https://t.co/uXFkIBt4Wc"
+                    },
+                    {
+                        "display_url": "pic.twitter.com/YlRujr0SRA",
+                        "end": 68,
+                        "expanded_url": "https://twitter.com/garagedeloffre/status/1335886526123810816/photo/1",
+                        "start": 45,
+                        "url": "https://t.co/YlRujr0SRA"
+                    },
+                    {
+                        "display_url": "pic.twitter.com/YlRujr0SRA",
+                        "end": 68,
+                        "expanded_url": "https://twitter.com/garagedeloffre/status/1335886526123810816/photo/1",
+                        "start": 45,
+                        "url": "https://t.co/YlRujr0SRA"
+                    },
+                    {
+                        "display_url": "pic.twitter.com/YlRujr0SRA",
+                        "end": 68,
+                        "expanded_url": "https://twitter.com/garagedeloffre/status/1335886526123810816/photo/1",
+                        "start": 45,
+                        "url": "https://t.co/YlRujr0SRA"
+                    },
+                    {
+                        "display_url": "pic.twitter.com/YlRujr0SRA",
+                        "end": 68,
+                        "expanded_url": "https://twitter.com/garagedeloffre/status/1335886526123810816/photo/1",
+                        "start": 45,
+                        "url": "https://t.co/YlRujr0SRA"
+                    }
+                ]
+            },
+            "id": "1335886526123810816",
+            "referenced_tweets": [
+                {
+                    "id": "1335886520969031682",
+                    "type": "replied_to"
+                }
+            ],
+            "text": "@Damien_Rougeart \n\u27a1\ufe0f https://t.co/uXFkIBt4Wc https://t.co/YlRujr0SRA"
         }
     },
     "tweets": {
@@ -6873,6 +6969,73 @@
                 }
             ],
             "text": "@ozezoeoze @PatatraShop TRO MIMS."
+        },
+        "1351602059343233030": {
+            "attachments": {
+                "media_keys": [
+                    "3_1351602020508172289",
+                    "3_1351602020197806081",
+                    "3_1351602020315226116"
+                ]
+            },
+            "author_id": "144817179",
+            "created_at": "2021-01-19T18:46:57.000Z",
+            "entities": {
+                "urls": [
+                    {
+                        "description": "Trouvez le cadeau fait main parfait, des v\u00eatements vintage et tendance, des bijoux uniques et plus encore... bien plus.",
+                        "display_url": "etsy.com/fr/shop/sarahg\u2026",
+                        "end": 72,
+                        "expanded_url": "https://www.etsy.com/fr/shop/sarahgontardartwork",
+                        "images": [
+                            {
+                                "height": 500,
+                                "url": "https://pbs.twimg.com/news_img/1351602062488969219/oxImD_rB?format=jpg&name=orig",
+                                "width": 500
+                            },
+                            {
+                                "height": 150,
+                                "url": "https://pbs.twimg.com/news_img/1351602062488969219/oxImD_rB?format=jpg&name=150x150",
+                                "width": 150
+                            }
+                        ],
+                        "start": 49,
+                        "status": 200,
+                        "title": "Illustration et tampographie par SarahGontardArtwork sur Etsy",
+                        "unwound_url": "https://www.etsy.com/fr/shop/sarahgontardartwork",
+                        "url": "https://t.co/BSozSB5TaX"
+                    },
+                    {
+                        "display_url": "pic.twitter.com/LfkGnqanJo",
+                        "end": 96,
+                        "expanded_url": "https://twitter.com/garagedeloffre/status/1351602059343233030/photo/1",
+                        "start": 73,
+                        "url": "https://t.co/LfkGnqanJo"
+                    },
+                    {
+                        "display_url": "pic.twitter.com/LfkGnqanJo",
+                        "end": 96,
+                        "expanded_url": "https://twitter.com/garagedeloffre/status/1351602059343233030/photo/1",
+                        "start": 73,
+                        "url": "https://t.co/LfkGnqanJo"
+                    },
+                    {
+                        "display_url": "pic.twitter.com/LfkGnqanJo",
+                        "end": 96,
+                        "expanded_url": "https://twitter.com/garagedeloffre/status/1351602059343233030/photo/1",
+                        "start": 73,
+                        "url": "https://t.co/LfkGnqanJo"
+                    }
+                ]
+            },
+            "id": "1351602059343233030",
+            "referenced_tweets": [
+                {
+                    "id": "1335886526123810816",
+                    "type": "replied_to"
+                }
+            ],
+            "text": "La belle nouvelle boutique de Sarah Gontard \ud83d\udc4c\n\u25b6\ufe0f https://t.co/BSozSB5TaX https://t.co/LfkGnqanJo"
         }
     },
     "users": {
