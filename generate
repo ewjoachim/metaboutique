@@ -135,7 +135,18 @@ def apply_patches(database: dict):
             "display_url": f"{somk_url}",
         }
     )
-    1332626878797066240
+    links_404 = [
+        1277912728330534912,  # @QuentinZuttion
+        1277917128486772737,  # @EmilieSeto
+        1315989809647759360,  # @ElleaBird
+        1327175178514788353,  # @loonpflug
+        1333415152897691648,  # @EvaRabz
+        1333736932166299649,  # @Florianosaure
+        1335886456024391685,  # Marie Avril
+        1335886515608690690,  # @pop_cube
+    ]
+    for tweet_id in links_404:
+        del database["tweets"][f"{tweet_id}"]
 
 
 def extract_tweeter_data(
