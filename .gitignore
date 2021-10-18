@@ -2,3 +2,4 @@ _out
 .ipynb_checkpoints
 .mypy_cache
 node_modules
+.DS_Store
