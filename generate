@@ -127,6 +127,15 @@ def apply_patches(database: dict):
     }
     del database["tweets"]["1333418478368419841"]["entities"]["urls"]
     del database["tweets"]["1318839439477645314"]["entities"]["urls"]
+    somk_url = "somkartshop.bigcartel.com/products"
+    database["tweets"]["1332626878797066240"]["entities"]["urls"][0].update(
+        {
+            "expanded_url": f"https://{somk_url}",
+            "unwound_url": f"https://{somk_url}",
+            "display_url": f"{somk_url}",
+        }
+    )
+    1332626878797066240
 
 
 def extract_tweeter_data(
