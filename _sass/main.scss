@@ -32,3 +32,7 @@ a {
   background-repeat: no-repeat;
   background-position: center;
 }
+.card-content .content {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

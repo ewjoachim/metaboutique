@@ -122,6 +122,7 @@ def apply_patches(database: dict):
         "url": "https://t.co/YKYKYVJ9zL",
         "expanded_url": "https://www.charlotteheurtier.fr/",
         "display_url": "charlotteheurtier.fr",
+        "title": "Charlotte Heurtier",
         "images": [{"url": "https://nowhere/charlotteheurtier.png"}],
     }
     del database["tweets"]["1333418478368419841"]["entities"]["urls"]
@@ -198,6 +199,7 @@ def prepare_tweet(
     except (KeyError, IndexError):
         return None
     result["link"] = url.get("unwound_url", url["expanded_url"])
+    result["title"] = url.get("title", "")
 
     # Don't post this website on this website. #Meta
     if SELF_URL in result["link"]:
