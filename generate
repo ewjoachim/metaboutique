@@ -146,7 +146,7 @@ def apply_patches(database: dict):
         1335886515608690690,  # @pop_cube
     ]
     for tweet_id in links_404:
-        del database["tweets"][f"{tweet_id}"]
+        del database["tweets"][f"{tweet_id}"]["entities"]["urls"]
 
 
 def extract_tweeter_data(
