@@ -564,6 +564,11 @@
             "media_key": "3_1456721515400122372",
             "type": "photo",
             "url": "https://pbs.twimg.com/media/FDdQgA4X0AQ8NEM.jpg"
+        },
+        "3_1457021793395412992": {
+            "media_key": "3_1457021793395412992",
+            "type": "photo",
+            "url": "https://pbs.twimg.com/media/FDhhmflWEAAHclv.jpg"
         }
     },
     "tweet_refs": {
@@ -4217,6 +4222,65 @@
                 }
             ],
             "text": "Des \u00e9cussons brod\u00e9s cools et des stickers pour les travailleurs d'internet !\n\u25b6\ufe0f https://t.co/vh86xKRqok https://t.co/Ru1vu0BRns"
+        },
+        "1456721542491090946": {
+            "attachments": {
+                "media_keys": [
+                    "3_1456721515400122372"
+                ]
+            },
+            "author_id": "144817179",
+            "created_at": "2021-11-05T20:34:14.000Z",
+            "entities": {
+                "mentions": [
+                    {
+                        "end": 38,
+                        "id": "2359876393",
+                        "start": 28,
+                        "username": "parazited"
+                    }
+                ],
+                "urls": [
+                    {
+                        "description": "Prints & Stickers principalement issus de shitpost et des travaux d'illustration de @parazited",
+                        "display_url": "parazited.bigcartel.com",
+                        "end": 67,
+                        "expanded_url": "https://parazited.bigcartel.com/",
+                        "images": [
+                            {
+                                "height": 1200,
+                                "url": "https://pbs.twimg.com/news_img/1456721547587166221/UNq9luKD?format=jpg&name=orig",
+                                "width": 1200
+                            },
+                            {
+                                "height": 150,
+                                "url": "https://pbs.twimg.com/news_img/1456721547587166221/UNq9luKD?format=jpg&name=150x150",
+                                "width": 150
+                            }
+                        ],
+                        "start": 44,
+                        "status": 200,
+                        "title": "Parazited",
+                        "unwound_url": "https://parazited.bigcartel.com/",
+                        "url": "https://t.co/JtRoBlwKR4"
+                    },
+                    {
+                        "display_url": "pic.twitter.com/bC0lemlEEl",
+                        "end": 91,
+                        "expanded_url": "https://twitter.com/sandrine2loffre/status/1456721542491090946/photo/1",
+                        "start": 68,
+                        "url": "https://t.co/bC0lemlEEl"
+                    }
+                ]
+            },
+            "id": "1456721542491090946",
+            "referenced_tweets": [
+                {
+                    "id": "1456202620490637312",
+                    "type": "replied_to"
+                }
+            ],
+            "text": "Les merveilleux stickers de @parazited \u2728\n\u25b6\ufe0f https://t.co/JtRoBlwKR4 https://t.co/bC0lemlEEl"
         }
     },
     "tweets": {
@@ -8146,6 +8210,52 @@
                 }
             ],
             "text": "Les merveilleux stickers de @parazited \u2728\n\u25b6\ufe0f https://t.co/JtRoBlwKR4 https://t.co/bC0lemlEEl"
+        },
+        "1457021856284909574": {
+            "attachments": {
+                "media_keys": [
+                    "3_1457021793395412992"
+                ]
+            },
+            "author_id": "144817179",
+            "created_at": "2021-11-06T16:27:35.000Z",
+            "entities": {
+                "mentions": [
+                    {
+                        "end": 28,
+                        "id": "1412345890656882688",
+                        "start": 15,
+                        "username": "canevasfatal"
+                    }
+                ],
+                "urls": [
+                    {
+                        "display_url": "sodavital.com/shop/canevasfa\u2026",
+                        "end": 94,
+                        "expanded_url": "https://www.sodavital.com/shop/canevasfatal",
+                        "start": 71,
+                        "status": 200,
+                        "title": "Canevas Fatal \u2014 SODA VITAL",
+                        "unwound_url": "https://www.sodavital.com/shop/canevasfatal",
+                        "url": "https://t.co/azgzsUXepu"
+                    },
+                    {
+                        "display_url": "pic.twitter.com/qWGNIOxKWt",
+                        "end": 118,
+                        "expanded_url": "https://twitter.com/sandrine2loffre/status/1457021856284909574/photo/1",
+                        "start": 95,
+                        "url": "https://t.co/qWGNIOxKWt"
+                    }
+                ]
+            },
+            "id": "1457021856284909574",
+            "referenced_tweets": [
+                {
+                    "id": "1456721542491090946",
+                    "type": "replied_to"
+                }
+            ],
+            "text": "Les canevas de @canevasfatal en \u00e9ditions limit\u00e9es.\nVITE VITE VITE. \n\u25b6\ufe0f https://t.co/azgzsUXepu https://t.co/qWGNIOxKWt"
         }
     },
     "users": {
@@ -8442,6 +8552,13 @@
             "profile_image_url": "https://pbs.twimg.com/profile_images/1232151560521687040/k95KRP9z_normal.jpg",
             "url": "https://t.co/mwWBjOCZdl",
             "username": "_kness"
+        },
+        "canevasfatal": {
+            "id": "1412345890656882688",
+            "name": "Canevas fatal",
+            "profile_image_url": "https://pbs.twimg.com/profile_images/1412345994918907904/2KOv0zxZ_normal.jpg",
+            "url": "https://t.co/YfslrssVEa",
+            "username": "canevasfatal"
         },
         "drinkalol": {
             "id": "775443666",
