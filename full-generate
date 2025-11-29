@@ -1,5 +1,0 @@
-#!/bin/bash -eu
-
-npm run deploy
-poetry run ./generate
-cp _staticfiles/* _out
